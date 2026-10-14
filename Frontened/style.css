@@ -1875,7 +1875,14 @@ body {
     }
 
     /* Make the two dropdowns and the export button share equal width */
-    .transaction-controls select,
+    .transaction-controls select {
+        flex: 1 1 0%; /* Distribute space evenly */
+        min-width: 0; /* CRITICAL: Forces dropdowns to shrink past their longest word */
+        padding: 0 8px; /* Slightly tighter padding for mobile */
+        font-size: 10px;
+        justify-content: center; /* Keeps the export icon centered */
+    }
+
     .transaction-controls > button {
         flex: 1 1 0%; /* Distribute space evenly */
         min-width: 0; /* CRITICAL: Forces dropdowns to shrink past their longest word */
