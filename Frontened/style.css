@@ -1864,9 +1864,22 @@ body {
     }
 
     .transaction-row {
-        grid-template-columns: 1fr;
-
+        /* Change from 1fr to a 2-column mobile layout */
+        grid-template-columns: 1fr 1fr; 
         padding: 15px;
+        gap: 12px;
+        align-items: center;
+    }
+
+    /* Force the transaction name to take up the full top row */
+    .transaction-row .transaction-name {
+        grid-column: span 2;
+        margin-bottom: 5px;
+    }
+
+    /* Ensure amounts align properly on mobile */
+    .transaction-row .amount {
+        font-size: 14px;
     }
 
     .wallet-actions {
@@ -2061,4 +2074,16 @@ body {
     font-size: 11px;
     color: var(--text-light);
     line-height: 1.4;
+}
+
+/* Add styling for the category badge */
+.category-badge {
+    background: #f1f5f9;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    color: var(--text-light);
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
 }
