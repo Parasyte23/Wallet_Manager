@@ -1326,7 +1326,7 @@ body {
 
 
 .search-transactions {
-    
+
     flex: 1 1 200px;
 
     height: 42px;
@@ -1865,10 +1865,23 @@ body {
 
     .transaction-controls {
         display: flex;
-        flex-wrap: wrap; /* Add this line */
-        gap: 12px;
-        margin-bottom: 18px;
-        width: 100%; /* Add this */
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    /* Force the search bar to take up 100% of the top row */
+    .search-transactions {
+        flex: 1 1 100%; 
+    }
+
+    /* Make the two dropdowns and the export button share equal width */
+    .transaction-controls select,
+    .transaction-controls > button {
+        flex: 1 1 0%; /* Distribute space evenly */
+        min-width: 0; /* CRITICAL: Forces dropdowns to shrink past their longest word */
+        padding: 0 8px; /* Slightly tighter padding for mobile */
+        font-size: 10px;
+        justify-content: center; /* Keeps the export icon centered */
     }
 
     .transaction-row {
