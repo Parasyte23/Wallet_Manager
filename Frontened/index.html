@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Wallet Management System</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+</head>
+
+<body>
+
+    <!-- ================= AUTHENTICATION ================= -->
+    <div id="authWrapper" class="auth-wrapper">
+        
+        <!-- Login Form -->
+        <div class="form-card auth-card" id="loginForm">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 30px;">
+                <div style="background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 24px;">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 26px; color: var(--primary-dark); line-height: 1;">MyWallet</h2>
+                </div>
+            </div>
+            
+            <h2>Welcome Back</h2>
+            <p class="form-description">Log in to manage your finances.</p>
+            
+            <form onsubmit="handleAuth(event, 'login')">
+                <label>Email</label>
+                <input type="email" id="loginEmail" required placeholder="name@example.com">
+                
+                <label>Password</label>
+                <input type="password" id="loginPassword" required placeholder="••••••••">
+                
+                <button class="primary-button" type="submit">Log In</button>
+                
+                <p class="auth-switch">
+                    Don't have an account? <a href="#" onclick="toggleAuth('register')">Sign up</a>
+                </p>
+            </form>
+        </div>
+
+        <!-- Registration Form -->
+        <div class="form-card auth-card" id="registerForm" style="display: none;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 30px;">
+                <div style="background: var(--primary); color: white; width: 45px; height: 45px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 24px;">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+                <div>
+                    <h2 style="margin: 0; font-size: 26px; color: var(--primary-dark); line-height: 1;">MyWallet</h2>
+                </div>
+            </div>
+
+            <h2>Create Account</h2>
+            <p class="form-description">Join to start tracking your wallet.</p>
+            
+            <form onsubmit="handleAuth(event, 'register')">
+                <label>Full Name</label>
+                <input type="text" id="regName" required placeholder="Praveen Vishwakarma">
+                
+                <label>Email</label>
+                <input type="email" id="regEmail" required placeholder="name@example.com">
+                
+                <label>Password</label>
+                <input type="password" id="regPassword" required placeholder="••••••••">
+                
+                <button class="primary-button" type="submit">Sign Up</button>
+                
+                <p class="auth-switch">
+                    Already have an account? <a href="#" onclick="toggleAuth('login')">Log in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Add id="mainApp" to your existing app div -->
+    <div id="mainApp" class="app" style="display: none;">
+        <!-- Your existing sidebar and main content goes here -->
+
+        <!-- ================= SIDEBAR ================= -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-wallet"></i>
+                </div>
+
+                <div>
+                    <h2>MyWallet</h2>
+                    <span>Management System</span>
+                </div>
+            </div>
+
+
+            <nav class="navigation">
+
+                <p class="menu-title">MAIN MENU</p>
+
+                <a href="#" class="nav-link active" onclick="showPage('dashboard', this)">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('wallet', this)">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>My Wallet</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('send', this)">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Send Money</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('add-money', this)">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <span>Add Money</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('withdraw', this)">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>Withdraw</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('transactions', this)">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>Transactions</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('analytics', this)">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Analytics</span>
+                </a>
+
+
+                <p class="menu-title settings-title">ACCOUNT</p>
+
+                <a href="#" class="nav-link" onclick="showPage('profile', this)" id="nav-profile">
+                    <i class="fa-solid fa-user" ></i>
+                    <span>Profile</span>
+                </a>
+
+                <a href="#" class="nav-link" onclick="showPage('settings', this)" id="nav-settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+
+            </nav>
+
+
+            <div class="sidebar-bottom">
+
+                <a href="#" class="logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ================= MAIN CONTENT ================= -->
+
+        <main class="main">
+
+            <!-- HEADER -->
+
+            <header class="topbar">
+
+                <div class="mobile-logo">
+                    <i class="fa-solid fa-wallet"></i>
+                    MyWallet
+                </div>
+
+                <div class="search-box">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input type="text" id="globalSearchInput" placeholder="Search transactions...">
+
+                </div>
+
+
+                <div class="header-right">
+
+                    <!-- NEW NOTIFICATION WRAPPER -->
+                    <div class="notification-container" style="position: relative;">
+                        
+                        <button class="notification" onclick="toggleNotifications()">
+                            <i class="fa-regular fa-bell"></i>
+                            <span id="notifBadge"></span>
+                        </button>
+
+                        <div class="notif-dropdown" id="notifDropdown">
+                            <div class="notif-header">
+                                <h4>Notifications</h4>
+                                <button onclick="clearNotifications()">Clear All</button>
+                            </div>
+                            
+                            <div class="notif-body" id="notifBody">
+                                <div class="notif-item" style="justify-content: center; border: none;">
+                                    <p style="color: var(--text-light);">No new notifications</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="user">
+
+                        <div class="user-avatar">
+                            P
+                        </div>
+
+                        <div class="user-info">
+                            <strong>Praveen</strong>
+                            <span>Personal Account</span>
+                        </div>
+
+                        <i class="fa-solid fa-chevron-down"></i>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- ================= DASHBOARD ================= -->
+
+            <section id="dashboard" class="page active-page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Good morning, Praveen 👋</p>
+
+                        <h1>Dashboard</h1>
+
+                        <p class="subtitle">
+                            Here's what's happening with your wallet today.
+                        </p>
+                    </div>
+
+                    <button class="date-button">
+                        <i class="fa-regular fa-calendar"></i>
+                        24 August 2026
+                    </button>
+
+                </div>
+
+
+                <!-- BALANCE CARD -->
+
+                <div class="balance-card">
+
+                    <div class="balance-left">
+
+                        <p>Total Wallet Balance</p>
+
+                        <h2 id="balance">
+                            ...
+                        </h2>
+
+                    </div>
+
+
+                    <div class="balance-icon">
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+
+                </div>
+
+
+                <!-- STATISTICS -->
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon income">
+                            <i class="fa-solid fa-arrow-down"></i>
+                        </div>
+
+                        <div>
+                            <p>Total Income</p>
+                            <h3 id="statIncome">₹0</h3>
+                            <small style="color: var(--text-light);">Overall</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon expense">
+                            <i class="fa-solid fa-arrow-up"></i>
+                        </div>
+
+                        <div>
+                            <p>Total Expenses</p>
+                            <h3 id="statExpense">₹0</h3>
+                            <small style="color: var(--text-light);">Overall</small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon transactions">
+                            <i class="fa-solid fa-right-left"></i>
+                        </div>
+
+                        <div>
+                            <p>Transactions</p>
+                            <h3 id="statTransactions">0</h3>
+
+                            <small>
+                                This month
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon savings">
+                            <i class="fa-solid fa-piggy-bank"></i>
+                        </div>
+
+                        <div>
+                            <p>Savings</p>
+                            <h3 id="statSavings">₹0</h3>
+                            <small style="color: var(--text-light);">Overall</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK ACTIONS -->
+
+                <div class="section-header">
+
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Manage your money quickly</p>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-actions">
+
+                    <button onclick="showPage('add-money')">
+
+                        <div class="action-icon add">
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+
+                        <div>
+                            <strong>Add Money</strong>
+                            <span>Add money to wallet</span>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <button onclick="showPage('send')">
+
+                        <div class="action-icon send">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+
+                        <div>
+                            <strong>Send Money</strong>
+                            <span>Transfer to someone</span>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+
+                    <button onclick="showPage('withdraw')">
+
+                        <div class="action-icon withdraw">
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                        </div>
+
+                        <div>
+                            <strong>Withdraw</strong>
+                            <span>Withdraw from wallet</span>
+                        </div>
+
+                        <i class="fa-solid fa-arrow-right"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- RECENT TRANSACTIONS -->
+
+                <div class="section-header transaction-header">
+
+                    <div>
+                        <h2>Recent Transactions</h2>
+                        <p>Your latest wallet activity</p>
+                    </div>
+
+                    <button onclick="showPage('transactions')">
+                        View All
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+
+                </div>
+
+
+                <div class="transaction-table">
+
+                    <div class="table-header">
+
+                        <span>Transaction</span>
+                        <span>Category</span>
+                        <span>Date</span>
+                        <span>Amount</span>
+                        <span>Status</span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon received">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div>
+                                <strong>Money Received</strong>
+                                <small>From Amit Sharma</small>
+                            </div>
+
+                        </div>
+
+                        <span>24 Aug 2026</span>
+
+                        <strong class="amount positive">
+                            +₹5,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon sent">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+
+                            <div>
+                                <strong>Money Sent</strong>
+                                <small>To Rahul Patil</small>
+                            </div>
+
+                        </div>
+
+                        <span>23 Aug 2026</span>
+
+                        <strong class="amount negative">
+                            -₹2,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon received">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div>
+                                <strong>Wallet Deposit</strong>
+                                <small>Added to wallet</small>
+                            </div>
+
+                        </div>
+
+                        <span>21 Aug 2026</span>
+
+                        <strong class="amount positive">
+                            +₹10,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon sent">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+
+                            <div>
+                                <strong>Shopping</strong>
+                                <small>Amazon Purchase</small>
+                            </div>
+
+                        </div>
+
+                        <span>20 Aug 2026</span>
+
+                        <strong class="amount negative">
+                            -₹1,500
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= WALLET PAGE ================= -->
+
+            <section id="wallet" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Your finances</p>
+                        <h1>My Wallet</h1>
+                        <p class="subtitle">
+                            Manage your wallet balance.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="wallet-large-card">
+
+                    <div class="wallet-card-top">
+                        <span>AVAILABLE BALANCE</span>
+                        <i class="fa-solid fa-wallet"></i>
+                    </div>
+
+                    <!-- Ensure your JavaScript updateBalance() function targets this ID -->
+                    <h2 id="walletBalance">
+                        ₹0.00
+                    </h2>
+
+                    <div class="wallet-number" id="walletCardId">
+                        Wallet ID: Loading...
+                    </div>
+
+                    <div class="wallet-card-bottom">
+                        <span id="walletCardName">Loading...</span>
+                        <span>INR ₹</span>
+                    </div>
+
+                </div>
+
+
+                <div class="wallet-actions">
+
+                    <button onclick="showPage('add-money')">
+                        <i class="fa-solid fa-plus"></i>
+                        Add Money
+                    </button>
+
+                    <button onclick="showPage('send')">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Send Money
+                    </button>
+
+                    <button onclick="showPage('withdraw')">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                        Withdraw
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= SEND MONEY ================= -->
+
+            <section id="send" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Make a transfer</p>
+                        <h1>Send Money</h1>
+                        <p class="subtitle">
+                            Send money to another wallet user.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </div>
+
+                    <h2>Send Money</h2>
+
+                    <p class="form-description">
+                        Enter the receiver's details and amount.
+                    </p>
+
+
+                    <form onsubmit="sendMoney(event)">
+
+                        <label>
+                            Receiver Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="receiver"
+                            placeholder="receiver@example.com"
+                            required
+                        >
+
+
+                        <label>
+                            Amount
+                        </label>
+
+                        <div class="amount-input">
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="sendAmount"
+                                placeholder="0.00"
+                                min="1"
+                                required
+                            >
+                        </div>
+
+                        <label>Category</label>
+                        <select id="sendCategory">
+                            <option value="transfer">💸 Transfer (Default)</option>
+                            <option value="shopping">🛍️ Shopping</option>
+                            <option value="bills">🧾 Bills</option>
+                            <option value="food">🍔 Food</option>
+                            <option value="other">📦 Other</option>
+                        </select>
+
+                        <label>
+                            Description
+                        </label>
+
+                        <input
+                            type="text"
+                            id="sendDescription"
+                            placeholder="What's this payment for?"
+                        >
+
+
+                        <div class="available">
+                            Available Balance:
+                            <strong id="sendAvailable">
+                                ...
+                            </strong>
+                        </div>
+
+
+                        <button class="primary-button" type="submit">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            Send Money
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADD MONEY ================= -->
+
+            <section id="add-money" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Fund your wallet</p>
+                        <h1>Add Money</h1>
+                        <p class="subtitle">
+                            Add money to your digital wallet.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-circle-plus"></i>
+                    </div>
+
+                    <h2>Add Money</h2>
+
+                    <p class="form-description">
+                        Enter the amount you want to add.
+                    </p>
+
+
+                    <form onsubmit="addMoney(event)">
+
+                        <label>
+                            Amount
+                        </label>
+
+                        <div class="amount-input">
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="addAmount"
+                                placeholder="0.00"
+                                min="1"
+                                required
+                            >
+                        </div>
+
+
+                        <div class="quick-amounts">
+
+                            <button type="button" onclick="setAddAmount(500)">
+                                ₹500
+                            </button>
+
+                            <button type="button" onclick="setAddAmount(1000)">
+                                ₹1,000
+                            </button>
+
+                            <button type="button" onclick="setAddAmount(5000)">
+                                ₹5,000
+                            </button>
+
+                            <button type="button" onclick="setAddAmount(10000)">
+                                ₹10,000
+                            </button>
+
+                        </div>
+
+                        <label>Category</label>
+                        <select id="addCategory">
+                            <option value="deposit">📥 Deposit</option>
+                            <option value="other">📦 Other</option>
+                        </select>
+
+                        <label>
+                            Payment Method
+                        </label>
+
+                        <select>
+                            <option>Bank Account</option>
+                            <option>UPI</option>
+                            <option>Debit Card</option>
+                        </select>
+
+
+                        <button class="primary-button" type="submit">
+                            <i class="fa-solid fa-plus"></i>
+                            Add Money
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= WITHDRAW ================= -->
+
+            <section id="withdraw" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Take money out</p>
+                        <h1>Withdraw Money</h1>
+                        <p class="subtitle">
+                            Withdraw money from your wallet.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="form-card">
+
+                    <div class="form-icon">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+
+                    <h2>Withdraw Money</h2>
+
+                    <p class="form-description">
+                        Enter the amount you want to withdraw.
+                    </p>
+
+
+                    <form onsubmit="withdrawMoney(event)">
+
+                        <label>
+                            Amount
+                        </label>
+
+                        <div class="amount-input">
+                            <span>₹</span>
+
+                            <input
+                                type="number"
+                                id="withdrawAmount"
+                                placeholder="0.00"
+                                min="1"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="available">
+                            Available Balance:
+                            <strong id="withdrawAvailable">
+                                ...
+                            </strong>
+                        </div>
+
+                        <label>Category</label>
+                        <select id="withdrawCategory">
+                            <option value="withdrawal">🏧 General Withdrawal</option>
+                            <option value="shopping">🛍️ Shopping</option>
+                            <option value="bills">🧾 Bills</option>
+                            <option value="food">🍔 Food</option>
+                            <option value="other">📦 Other</option>
+                        </select>
+
+                        <label>
+                            Withdraw To
+                        </label>
+
+                        <select>
+
+                            <option>
+                                Bank Account ****4589
+                            </option>
+
+                            <option>
+                                UPI - praveen@upi
+                            </option>
+
+                        </select>
+
+
+                        <button class="primary-button" type="submit">
+                            <i class="fa-solid fa-money-bill-transfer"></i>
+                            Withdraw
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSACTIONS ================= -->
+
+            <section id="transactions" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Wallet activity</p>
+
+                        <h1>Transactions</h1>
+
+                        <p class="subtitle">
+                            View all your transactions.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="transaction-controls">
+
+                    <div class="search-transactions">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <!-- Added id="transactionSearch" -->
+                        <input 
+                            type="text" 
+                            id="transactionSearch" 
+                            placeholder="Search transactions..."
+                        >
+                    </div>
+
+                    <!-- Added id="transactionFilter" and value attributes -->
+                   <div style="display: flex; gap: 12px; align-items: center;">
+                    <select id="filterType" onchange="fetchFilteredTransactions()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+                        <option value="all">All Transactions</option>
+                        <option value="credit">Money Received & Deposits</option>
+                        <option value="debit">Money Sent & Withdrawals</option>
+                    </select>
+                    
+                    <!-- New Category Filter -->
+                    <select id="filterCategory" onchange="fetchFilteredTransactions()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+                        <option value="all">All Categories</option>
+                        <option value="Shopping">Shopping</option>
+                        <option value="Food">Food</option>
+                        <option value="Bills">Bills</option>
+                        <option value="Deposit">Deposit</option>
+                        <option value="Transfer">Transfer</option>
+                    </select>
+
+                    <button class="btn btn-outline" style="padding: 8px 16px;"><i class="fa-solid fa-download"></i> Export</button>
+                </div>
+
+                    <button>
+                        <i class="fa-solid fa-download"></i>
+                        Export
+                    </button>
+
+                </div>
+
+
+                <div class="transaction-table full-table">
+
+                    <div class="table-header">
+                        <span>Transaction</span>
+                        <span>Category</span>
+                        <span>Date</span>
+                        <span>Amount</span>
+                        <span>Status</span>
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon received">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div>
+                                <strong>Money Received</strong>
+                                <small>From Amit Sharma</small>
+                            </div>
+
+                        </div>
+
+                        <span>24 Aug 2026</span>
+
+                        <strong class="amount positive">
+                            +₹5,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon sent">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+
+                            <div>
+                                <strong>Money Sent</strong>
+                                <small>To Rahul Patil</small>
+                            </div>
+
+                        </div>
+
+                        <span>23 Aug 2026</span>
+
+                        <strong class="amount negative">
+                            -₹2,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon received">
+                                <i class="fa-solid fa-arrow-down"></i>
+                            </div>
+
+                            <div>
+                                <strong>Wallet Deposit</strong>
+                                <small>Bank Account</small>
+                            </div>
+
+                        </div>
+
+                        <span>21 Aug 2026</span>
+
+                        <strong class="amount positive">
+                            +₹10,000
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+
+                    <div class="transaction-row">
+
+                        <div class="transaction-name">
+
+                            <div class="transaction-icon sent">
+                                <i class="fa-solid fa-arrow-up"></i>
+                            </div>
+
+                            <div>
+                                <strong>Shopping</strong>
+                                <small>Amazon Purchase</small>
+                            </div>
+
+                        </div>
+
+                        <span>20 Aug 2026</span>
+
+                        <strong class="amount negative">
+                            -₹1,500
+                        </strong>
+
+                        <span class="status success">
+                            Completed
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ANALYTICS ================= -->
+
+            <section id="analytics" class="page">
+
+                <div class="page-heading">
+
+                    <div>
+                        <p class="greeting">Your financial overview</p>
+
+                        <h1>Analytics</h1>
+
+                        <p class="subtitle">
+                            Understand your income and spending.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="analytics-grid">
+
+                    <div class="chart-card">
+
+                        <div class="chart-header">
+
+                            <div>
+                                <h3>Income vs Expenses</h3>
+                                <p>Last 6 months</p>
+                            </div>
+
+                            <select>
+                                <option>6 Months</option>
+                                <option>1 Year</option>
+                            </select>
+
+                        </div>
+
+
+                        <div class="canvas-container" style="position: relative; height:280px; width:100%; margin-top: 20px;">
+                            <canvas id="incomeExpenseChart"></canvas>
+                        </div>
+
+
+                        <div class="chart-legend">
+
+                            <span>
+                                <i class="legend-income"></i>
+                                Income
+                            </span>
+
+                            <span>
+                                <i class="legend-expense"></i>
+                                Expenses
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="chart-card spending-card">
+
+                        <div class="chart-header">
+
+                            <div>
+                                <h3>Spending Categories</h3>
+                                <p>This month</p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="canvas-container" style="position: relative; height:280px; width:100%; margin-top: 20px;">
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+
+
+                        <div class="category-list" id="dynamicCategoryList">
+
+                            <div>
+                                <span>
+                                    <i class="dot food"></i>
+                                    Food
+                                </span>
+
+                                <strong>₹5,500</strong>
+                            </div>
+
+                            <div>
+                                <span>
+                                    <i class="dot shopping"></i>
+                                    Shopping
+                                </span>
+
+                                <strong>₹6,000</strong>
+                            </div>
+
+                            <div>
+                                <span>
+                                    <i class="dot bills"></i>
+                                    Bills
+                                </span>
+
+                                <strong>₹4,000</strong>
+                            </div>
+
+                            <div>
+                                <span>
+                                    <i class="dot other"></i>
+                                    Others
+                                </span>
+
+                                <strong>₹4,000</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- ================= PROFILE PAGE ================= -->
+            <div id="profile" class="page">
+                <div class="page-header">
+                    <div>
+                        <h2>My Profile</h2>
+                        <p style="color: var(--text-light);">Manage your account details</p>
+                    </div>
+                </div>
+
+                <div class="form-card" style="margin-top: 25px; padding: 0; overflow: hidden; max-width: 600px;">
+                    <div style="height: 120px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); width: 100%;"></div>
+                    
+                    <!-- Removed text-align: center and adjusted margins -->
+                    <div style="padding: 0 40px 40px; margin-top: -50px;">
+                        <!-- Added margin-left: 0 to left-align the avatar -->
+                        <div class="user-avatar" id="profilePageAvatar" style="width: 100px; height: 100px; font-size: 40px; margin: 0 0 15px 0; display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: var(--shadow);"></div>
+                        <h2 id="profilePageName" style="margin-bottom: 5px; font-size: 24px;"></h2>
+                        
+                        <!-- Changed justify-content to flex-start -->
+                        <div style="display: flex; gap: 15px; justify-content: flex-start; margin-top: 25px;">
+                            <div style="background: #f8fafc; padding: 15px 25px; border-radius: 12px; border: 1px solid var(--border);">
+                                <p style="font-size: 11px; color: var(--text-light); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px;">Account Status</p>
+                                <p style="font-weight: 600; color: #10b981; font-size: 14px;"><i class="fa-solid fa-circle-check"></i> Active Student</p>
+                            </div>
+                            <div style="background: #f8fafc; padding: 15px 25px; border-radius: 12px; border: 1px solid var(--border);">
+                                <p style="font-size: 11px; color: var(--text-light); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 5px;">Member Since</p>
+                                <p style="font-weight: 600; color: var(--text); font-size: 14px;">September 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= SETTINGS PAGE ================= -->
+            <div id="settings" class="page">
+                <div class="page-header">
+                    <div>
+                        <h2>Settings</h2>
+                        <p style="color: var(--text-light);">Manage your preferences</p>
+                    </div>
+                </div>
+
+                <div class="form-card" style="margin-top: 25px; max-width: 600px;">
+                    <form onsubmit="handleSettingsUpdate(event)" style="display: flex; flex-direction: column; gap: 20px;">
+                        
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">Display Name</label>
+                            <div style="position: relative; display: flex; align-items: center;">
+                                <i class="fa-regular fa-user" style="position: absolute; left: 15px; color: var(--text-light);"></i>
+                                <input type="text" id="settingsName" placeholder="Enter new name" required style="width: 100%; padding: 12px 15px 12px 40px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; transition: border-color 0.2s;">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label style="display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px;">Currency Preference</label>
+                            <div style="position: relative; display: flex; align-items: center;">
+                                <i class="fa-solid fa-coins" style="position: absolute; left: 15px; color: var(--text-light);"></i>
+                                <select id="settingsCurrency" disabled style="width: 100%; padding: 12px 15px 12px 40px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; background-color: #f8fafc; color: var(--text-light); appearance: none; cursor: not-allowed;">
+                                    <option value="INR">₹ Indian Rupee (Default)</option>
+                                </select>
+                            </div>
+                            <small style="color: var(--text-light); margin-top: 8px; display: block; font-size: 12px;"><i class="fa-solid fa-circle-info"></i> Multi-currency support coming in v2.0</small>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="padding: 14px; margin-top: 10px; font-size: 15px; border-radius: 8px; width: 100%;">
+                            Save Changes
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+
+        </main>
+
+    </div>
+
+    <!-- ================= TOAST ================= -->
+
+    <div id="toast" class="toast">
+
+        <i class="fa-solid fa-circle-check"></i>
+
+        <span id="toastMessage">
+            Success
+        </span>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="http://localhost:5000/socket.io/socket.io.js"></script>
+    <script src="script.js?v=2"></script>
+
+    <!-- Floating Help Button -->
+    <a href="mailto:support@mywallet.com" id="helpFAB" draggable="false" style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: var(--primary); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); z-index: 1000; cursor: grab; text-decoration: none; transition: transform 0.2s;">
+        <i class="fa-solid fa-headset"></i>
+    </a>
+
+</body>
+</html>
