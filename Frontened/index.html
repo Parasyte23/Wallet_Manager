@@ -953,14 +953,14 @@
 
                     <!-- Added id="transactionFilter" and value attributes -->
                    <div style="display: flex; gap: 12px; align-items: center;">
-                    <select id="filterType" onchange="fetchFilteredTransactions()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+                    <select id="filterType" onchange="fetchFilteredTransactions()" style="border-radius: 6px; border: 1px solid var(--border);">
                         <option value="all">All Transactions</option>
                         <option value="credit">Money Received & Deposits</option>
                         <option value="debit">Money Sent & Withdrawals</option>
                     </select>
                     
                     <!-- New Category Filter -->
-                    <select id="filterCategory" onchange="fetchFilteredTransactions()" style="padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border);">
+                    <select id="filterCategory" onchange="fetchFilteredTransactions()" style="border-radius: 6px; border: 1px solid var(--border);">
                         <option value="all">All Categories</option>
                         <option value="Shopping">Shopping</option>
                         <option value="Food">Food</option>
