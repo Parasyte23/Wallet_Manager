@@ -26,7 +26,7 @@ window.handleAuth = async function(event, type) {
     }
 
     try {
-        const response = await fetch(`http://localhost:5000/api/auth/${type}`, {
+        const response = await fetch(`https://wallet-manager-backend-r5fq.onrender.com/api/auth/${type}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -103,7 +103,7 @@ function checkAuthState() {
         
         // NEW: Connect WebSocket and listen for incoming money
         if (!socket && typeof io !== 'undefined') {
-            socket = io('http://localhost:5000');
+            socket = io('https://wallet-manager-backend-r5fq.onrender.com');
             socket.emit('joinRoom', userId);
 
             socket.on('moneyReceived', (data) => {
@@ -161,7 +161,7 @@ async function fetchUserBalance() {
     if (!userId) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/wallet/user/${userId}`, {
+        const response = await fetch(`https://wallet-manager-backend-r5fq.onrender.com/api/wallet/user/${userId}`, {
             method: 'GET',
             headers: getAuthHeaders() // Pass the JWT here
         });
@@ -272,11 +272,11 @@ async function updateDashboardStats() {
 
     try {
         // Fetch transaction counts
-        const transRes = await fetch(`http://localhost:5000/api/wallet/transactions/${userId}?limit=1000`, { headers: getAuthHeaders() });
+        const transRes = await fetch(`https://wallet-manager-backend-r5fq.onrender.com/api/wallet/transactions/${userId}?limit=1000`, { headers: getAuthHeaders() });
         const transData = await transRes.json();
         
         // Fetch financial aggregates
-        const analyticsRes = await fetch(`http://localhost:5000/api/wallet/analytics/${userId}`, { headers: getAuthHeaders() });
+        const analyticsRes = await fetch(`https://wallet-manager-backend-r5fq.onrender.com/api/wallet/analytics/${userId}`, { headers: getAuthHeaders() });
         const analyticsData = await analyticsRes.json();
 
         if (transRes.ok && analyticsRes.ok) {
@@ -319,7 +319,7 @@ async function addMoney(event) {
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
-        const response = await fetch('http://localhost:5000/api/wallet/add', {
+        const response = await fetch('https://wallet-manager-backend-r5fq.onrender.com/api/wallet/add', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({
@@ -379,7 +379,7 @@ async function withdrawMoney(event) {
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
-        const response = await fetch('http://localhost:5000/api/wallet/withdraw', {
+        const response = await fetch('https://wallet-manager-backend-r5fq.onrender.com/api/wallet/withdraw', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({
@@ -447,7 +447,7 @@ async function sendMoney(event) {
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
 
-        const response = await fetch('http://localhost:5000/api/wallet/send', {
+        const response = await fetch('https://wallet-manager-backend-r5fq.onrender.com/api/wallet/send', {
             method: 'POST',
             headers: getAuthHeaders(),
             body: JSON.stringify({
@@ -508,7 +508,7 @@ async function handleSettingsUpdate(event) {
         const originalText = btn.innerHTML;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
         
-        const response = await fetch('http://localhost:5000/api/auth/update-profile', {
+        const response = await fetch('https://wallet-manager-backend-r5fq.onrender.com/api/auth/update-profile', {
             method: 'PUT',
             headers: getAuthHeaders(),
             body: JSON.stringify({ userId, newName })
@@ -588,7 +588,7 @@ async function loadTransactions(limit = null, search = '', type = '') {
     
     // Build the query string
 
-    let url = `http://localhost:5000/api/wallet/transactions/${userId}?`;
+    let url = `https://wallet-manager-backend-r5fq.onrender.com/api/wallet/transactions/${userId}?`;
     if (limit) url += `limit=${limit}&`;
     if (search) url += `search=${search}&`;
     if (type) url += `type=${type}`;
@@ -762,7 +762,7 @@ async function fetchFilteredTransactions() {
 
     try {
         // Build the dynamic URL. Note: limit=1000 ensures it doesn't get stuck at 4!
-        let url = `http://localhost:5000/api/wallet/transactions/${userId}?limit=1000`;
+        let url = `https://wallet-manager-backend-r5fq.onrender.com/api/wallet/transactions/${userId}?limit=1000`;
         
         if (type !== 'all') url += `&type=${type}`;
         if (category !== 'all') url += `&category=${category}`;
@@ -791,7 +791,7 @@ async function loadAnalytics() {
     if (!userId) return;
 
     try {
-        const response = await fetch(`http://localhost:5000/api/wallet/analytics/${userId}`, {
+        const response = await fetch(`https://wallet-manager-backend-r5fq.onrender.com/api/wallet/analytics/${userId}`, {
             method: 'GET',
             headers: getAuthHeaders()
         });
