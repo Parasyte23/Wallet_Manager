@@ -34,3 +34,28 @@ A full-stack, real-time digital wallet application developed as a Semester V BBA
 ```bash
 git clone [https://github.com/yourusername/wallet-management-system.git](https://github.com/yourusername/wallet-management-system.git)
 cd wallet-management-system
+```
+
+**2. Setup the Backend**
+```bash
+cd backend
+npm install
+```
+
+**3. Configure Environment Variables**
+Create a `.env` file in the `/backend` directory and add the following keys:
+```env
+PORT=5000
+MONGO_URI=your_mongodb_atlas_connection_string
+JWT_SECRET=your_secure_random_secret_key
+```
+
+**4. Start the Application**
+* **Backend:** Run `node server.js` inside the `/backend` folder. The server will start on `http://localhost:5000`.
+* **Frontend:** Open the `/frontend` folder and launch `index.html` using VS Code Live Server or your preferred static server.
+
+## 📂 Project Structure
+* `/frontend` - Contains all client-side logic (`script.js`), stylesheets (`style.css`), and UI components.
+* `/backend/controllers` - Core business logic for Auth and Wallet operations.
+* `/backend/models` - Mongoose schemas for Users and Transactions.
+* `/backend/routes` - Express API endpoint definitions.
