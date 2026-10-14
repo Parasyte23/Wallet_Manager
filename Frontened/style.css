@@ -1284,9 +1284,8 @@ body {
 
 .quick-amounts {
     display: flex;
-
+    flex-wrap: wrap; /* Add this line */
     gap: 8px;
-
     margin: 5px 0;
 }
 
@@ -1327,7 +1326,7 @@ body {
 
 
 .search-transactions {
-    flex: 1;
+    flex: 1 1 200px;
 
     height: 42px;
 
@@ -1402,14 +1401,18 @@ body {
 
 .chart-card {
     background: white;
-
-    border: 1px solid var(--border);
-
     border-radius: 14px;
-
     padding: 25px;
-
     box-shadow: var(--shadow);
+    max-width: 100%; /* Add this */
+    overflow: hidden; /* Add this to clip overflowing charts */
+    box-sizing: border-box;
+}
+
+/* Add this new rule to force the canvas elements to shrink */
+.chart-card canvas {
+    max-width: 100% !important;
+    height: auto !important;
 }
 
 
@@ -1860,7 +1863,11 @@ body {
     }
 
     .transaction-controls {
-        flex-direction: column;
+        display: flex;
+        flex-wrap: wrap; /* Add this line */
+        gap: 12px;
+        margin-bottom: 18px;
+        width: 100%; /* Add this */
     }
 
     .transaction-row {
